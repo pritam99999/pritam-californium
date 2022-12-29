@@ -1,4 +1,5 @@
 const userModel= require("../models/userModel")
+const jwt = require("jsonwebtoken");
 
 const loginUser = async function (req, res,next) {
     let userName = req.body.emailId;
@@ -7,8 +8,13 @@ const loginUser = async function (req, res,next) {
     let user = await userModel.findOne({ emailId: userName, password: password });
     if (!user)
     return res.send({status: false,msg: "the credentials don't match with any user's data",});
-    let token = jwt.sign({userId: user._id.toString(),Clan:"Uchiha",Organisation: "Akatsuki",},"secret-ring");
-    res.setHeader("x-auth-token", token);
+    let token = jwt.sign(
+        {userId: user._id.toString(),
+        Clan:"Uchiha",
+        Organisation: "Akatsuki",},
+        "secret-ring");
+
+    res.setHeader("x-auth-token",token);
     res.send({ status: true, token: token });
     next();
   };
@@ -46,6 +52,10 @@ const loginUser = async function (req, res,next) {
     res.send({ status: deletedUser, data: deletedUser });
     next();
   };
+
+ 
+
+
 
 module.exports.updateUser = updateUser;
 module.exports.loginUser = loginUser;

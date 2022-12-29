@@ -12,9 +12,11 @@ router.post("/users", userController.createUser)
 
 router.post("/login", mid.loginUser)
 
-router.get("/users/:userId", userController.getUserData)
+router.get("/getUserData/:userId", userController.getUserData)
 
 router.put("/Updateusers/:userId", mid.updateUser)
 
 router.put("/Deleteusers/:userId", mid.deleteUser)
-module.exports = router;
+
+router.post("/user/:userId/posts",userController.postMessage)
+module.exports = router;    
